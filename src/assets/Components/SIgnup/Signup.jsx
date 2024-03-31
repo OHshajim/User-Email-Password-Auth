@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import auth from "../../../Firebase/Firebase.config";
 import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
@@ -11,6 +11,7 @@ const Signup = () => {
     const [isShow, setShow] = useState(false)
     const handleSignUp = e => {
         e.preventDefault();
+        const name = e.target.name.value
         const email = e.target.email.value
         const password = e.target.password.value
         const checked = e.target.terms.checked
@@ -36,6 +37,22 @@ const Signup = () => {
             .then(result => {
                 console.log(result.user);
                 setSuccess('Successfully created ')
+                // update profile
+                updateProfile(auth.currentUser, {
+                    displayName: name, 
+                    photoURL: "https://example.com/jane-q-user/profile.jpg"
+                })
+                .then(() => {
+                    console.log("profile Updated");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+                // verification email
+                sendEmailVerification(result.user)
+                    .then(() => {
+                        alert('please check your email and verified your email')
+                    })
             })
             .catch(error => {
                 console.error(error);
@@ -48,7 +65,10 @@ const Signup = () => {
             <div className="mx-auto  p-5 md:w-1/2 text-center">
                 <h2 className='text-3xl mb-5'>Please Sign up</h2>
                 <form className="space-y-4 " onSubmit={handleSignUp}>
-                    <input className="w-full py-3 px-3 text-xl" required placeholder="Enter your Email" type="email" name="email" /><br />
+                    <input className="w-full py-3 px-3 text-xl" required placeholder="Enter your name" type="text" name="name" />
+                    <br />
+                    <input className="w-full py-3 px-3 text-xl" required placeholder="Enter your Email" type="email" name="email" />
+                    <br />
                     <div className="relative border ">
                         <input
                             className="w-full py-3 px-3 text-xl"
