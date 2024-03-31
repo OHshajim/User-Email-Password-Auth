@@ -3,6 +3,7 @@ import auth from "../../../Firebase/Firebase.config";
 import { useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 const Signup = () => {
     const [error, setError] = useState('')
@@ -70,7 +71,7 @@ const Signup = () => {
                 {
                     success && <p className="text-green-600 text-xl my-3">{success}</p>
                 }
-
+                <p className="text-start mt-2">Already have an account ??? Please <Link to="/Login">Log in</Link></p>
             </div>
         </div>
     );

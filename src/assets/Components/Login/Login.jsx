@@ -1,18 +1,23 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import auth from "../../../Firebase/Firebase.config";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
     const [error, setError] = useState('')
+    const [success, setSuccess] = useState('')
+
     const handleSignin = e => {
         e.preventDefault();
         const email = e.target.email.value
         const password = e.target.password.value
         console.log(email, password);
         setError(' ')
+        setSuccess(' ')
         signInWithEmailAndPassword(auth, email, password)
             .then(result => {
                 console.log(result.user);
+                setSuccess('Successfully Log In ')
             })
             .catch(error => {
                 console.log(error);
@@ -29,7 +34,10 @@ const Login = () => {
                         <h1 className="text-5xl font-bold">Login now!</h1>
                         <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
                         {
-                           error&&<p>{error.message}</p>
+                            error && <p>{error.message}</p>
+                        }
+                        {
+                            success && <p>{success}</p>
                         }
                     </div>
                     <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
@@ -47,6 +55,7 @@ const Login = () => {
                                 <input type="password" name="password" placeholder="password" className="input input-bordered" required />
                                 <label className="label">
                                     <a href="#" className="label-text-alt link link-hover">Forgot password?</a>
+                                    <Link to="/SignUp" className="label-text-alt link link-hover">new account</Link>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
